@@ -10,18 +10,18 @@ boundarybox = function(r)
 
 		walll = {}
 		walll.body = love.physics.newBody(world, -1, y/2, 'static')
-		walll.shape = love.physics.newRectangleShape(1, 800)
+		walll.shape = love.physics.newRectangleShape(1, y)
 		walll.fixture = love.physics.newFixture(walll.body, walll.shape)
 
 		wallr = {}
 		wallr.body = love.physics.newBody(world, x+1, y/2, 'static')
-		wallr.shape = love.physics.newRectangleShape(1, 800)
+		wallr.shape = love.physics.newRectangleShape(1, y)
 		wallr.fixture = love.physics.newFixture(wallr.body, wallr.shape)
 		wallr.fixture:setUserData(wallr)
 
 		ceil = {}
 		ceil.body = love.physics.newBody(world, x/2, -1, 'static')
-		ceil.shape = love.physics.newRectangleShape(1280, 1)
+		ceil.shape = love.physics.newRectangleShape(x, 1)
 		ceil.fixture = love.physics.newFixture(ceil.body, ceil.shape)
 	else
 		floor.body:destroy()
