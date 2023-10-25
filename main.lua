@@ -2,11 +2,12 @@ local world = require('world')
 love.keyboard.setKeyRepeat(true)
 --define objects and boundary box
 --local triangle = require('entities/triangle')
-local rect = require('entities/rect')
 local circle = require('entities/circle')
+require('entities/rect')
+--r.fixture:destroy()
 require('entities/boundarybox')
 boundarybox()
-local objects = {rect, circle}
+local objects = {circle}
 
 --map keys to functions
 keymap = {
@@ -16,14 +17,7 @@ keymap = {
     end
   end,
   r = function()
-    r = {}
-    r.body = love.physics.newBody(world, love.mouse.getX(), love.mouse.getY(), 'dynamic')
-    r.body:setMass(1)
-    r.body:setAngularDamping(1)
-    r.body:setLinearDamping(0.5)
-    r.shape = love.physics.newRectangleShape( 0, 0, 75, 75, 0)
-    r.fixture = love.physics.newFixture(r.body, r.shape)
-    r.fixture:setRestitution(1)
+    local r = createrectangle(love.mouse.getPosition())
     table.insert(objects, r)
   end,
   m = function()
@@ -49,10 +43,12 @@ keymap = {
 function drawobjects(objlst)
   for i = 1, #objlst do
     if objlst[i].body:getUserData() == circle then
+      love.graphics.setColor(0,1,0)
       local cx, cy = objlst[i].body:getWorldPoint(objlst[i].shape:getPoint())
-      love.graphics.circle('line', cx, cy, objlst[i].shape:getRadius())
+      love.graphics.circle('fill', cx, cy, objlst[i].shape:getRadius())
     else
-      love.graphics.polygon('line', objlst[i].body:getWorldPoints(objlst[i].shape:getPoints()))
+      love.graphics.setColor(1,0,0)
+      love.graphics.polygon('fill', objlst[i].body:getWorldPoints(objlst[i].shape:getPoints()))
     end
   end
 end
@@ -72,6 +68,7 @@ function drawline(objls)
   if love.mouse.isDown(1) and inshape == true then
     local px, py = love.mouse.getPosition()
     local lx, ly = clicked.body:getWorldCenter()
+    love.graphics.setColor(1,1,1)
     love.graphics.line(lx, ly, px, py)
   else
     inshape = false
