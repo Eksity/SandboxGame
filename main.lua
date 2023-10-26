@@ -2,11 +2,12 @@ local world = require('world')
 love.keyboard.setKeyRepeat(true)
 --define objects and boundary box
 --local triangle = require('entities/triangle')
-local circle = require('entities/circle')
+require('entities/circle')
 require('entities/rect')
 --r.fixture:destroy()
 require('entities/boundarybox')
 boundarybox()
+circle = createcircle()
 local objects = {circle}
 
 --map keys to functions
@@ -21,28 +22,20 @@ keymap = {
     table.insert(objects, r)
   end,
   m = function()
-    for i=1, #objects do
+    for i=2, #objects do
       objects[i].fixture:destroy()
     end
-    objects = {}
+    objects = {circle}
   end,
   c = function()
-    c = {}
-    c.body = love.physics.newBody(world, love.mouse.getX(), love.mouse.getY(), 'dynamic')
-    c.body:setMass(1)
-    c.body:setAngularDamping(1)
-    c.body:setLinearDamping(0.5)
-    c.shape = love.physics.newCircleShape(75/2)
-    c.fixture = love.physics.newFixture(c.body, c.shape)
-    c.fixture:setRestitution(1)
-    c.body:setUserData(circle)
+    local c = createcircle(love.mouse.getPosition())
     table.insert(objects, c)
   end
 }
 
 function drawobjects(objlst)
   for i = 1, #objlst do
-    if objlst[i].body:getUserData() == circle then
+    if objlst[i].shape:getType() == 'circle' then
       love.graphics.setColor(0,1,0)
       local cx, cy = objlst[i].body:getWorldPoint(objlst[i].shape:getPoint())
       love.graphics.circle('fill', cx, cy, objlst[i].shape:getRadius())
@@ -78,7 +71,11 @@ end
 
 --update the world
 love.update = function(dt)
-  world:update(dt)
+  if not clicked then
+    world:update(dt)
+  else
+    world:update(dt/4)
+  end
 end
 
 --draw
