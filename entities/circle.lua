@@ -12,5 +12,10 @@ function createcircle(x, y)
 	circle.fixture = love.physics.newFixture(circle.body, circle.shape)
 	circle.fixture:setRestitution(1)
 	circle.body:setUserData(circle)
+	circle.draw = function(self)
+		love.graphics.setColor(0,1,0)
+        local cx, cy = self.body:getWorldPoint(self.shape:getPoint())
+      	love.graphics.circle('fill', cx, cy, self.shape:getRadius())
+	end
 	return circle
 end

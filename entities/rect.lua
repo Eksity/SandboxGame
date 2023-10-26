@@ -13,5 +13,9 @@ function createrectangle(x, y)
 	rect.fixture = love.physics.newFixture(rect.body, rect.shape)
 	rect.fixture:setRestitution(1)
 	rect.fixture:setUserData(rect)
+	rect.draw = function(self)
+		love.graphics.setColor(1,0,0)
+    	love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
+	end
 	return rect
 end
