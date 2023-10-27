@@ -1,6 +1,6 @@
 local world = require('world')
 function createrectangle(x, y)
-	rect = {}
+	local rect = {}
 	rect.body = love.physics.newBody(world, 0, 0, 'dynamic')
 	rect.body:setMass(1)
 	rect.body:setAngularDamping(1)
@@ -17,5 +17,9 @@ function createrectangle(x, y)
 		love.graphics.setColor(1,0,0)
     	love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
 	end
+	rect.health = 5
+	rect.end_contact = function(self)
+    	self.health = self.health - 1
+  	end
 	return rect
 end

@@ -1,6 +1,6 @@
 local world = require('world')
 function createcircle(x, y)
-	circle = {}
+	local circle = {}
 	circle.body = love.physics.newBody(world, 0, 0, 'dynamic')
 	circle.body:setMass(1)
 	circle.body:setLinearDamping(0.5)
@@ -11,11 +11,17 @@ function createcircle(x, y)
 	end
 	circle.fixture = love.physics.newFixture(circle.body, circle.shape)
 	circle.fixture:setRestitution(1)
-	circle.body:setUserData(circle)
+	circle.fixture:setUserData(circle)
 	circle.draw = function(self)
 		love.graphics.setColor(0,1,0)
         local cx, cy = self.body:getWorldPoint(self.shape:getPoint())
       	love.graphics.circle('fill', cx, cy, self.shape:getRadius())
 	end
+	circle.health = nil
+	circle.end_contact = function(self)
+		if self.health then
+    		self.health = self.health - 1
+    	end
+  	end
 	return circle
 end

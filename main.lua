@@ -1,79 +1,49 @@
 local world = require('world')
-love.keyboard.setKeyRepeat(true)
-require('entities/circle')
-require('entities/rect')
-require('entities/boundarybox')
-boundarybox()
-circle = createcircle()
-local objects = {circle}
+local settings = require('settings')
+require('entities')
 
---map keys to functions
+--map keys to function
 keymap = {
   space = function()
-    for i = 1,  #objects do
-      objects[i].body:applyLinearImpulse(math.random(-1000, 1000), math.random(-1000, 1000))
+    for i = 1,   entities do
+      entities[i].body:applyLinearImpulse(math.random(-1000, 1000), math.random(-1000, 1000))
     end
   end,
   r = function()
     local r = createrectangle(love.mouse.getPosition())
-    table.insert(objects, r)
+    table.insert(entities, r)
   end,
   m = function()
-    for i=2, #objects do
-      objects[i].fixture:destroy()
+    for i=2,  entities do
+      entities[i].fixture:destroy()
     end
-    objects = {circle}
+    entities = {circle}
   end,
   c = function()
     local c = createcircle(love.mouse.getPosition())
-    table.insert(objects, c)
+    table.insert(entities, c)
   end
 }
 
-
-function drawobjects(objlst)
-  for i = 1, #objlst do
-    objlst[i]:draw()
+function love.update(dt)
+  if settings.health == true then
+    healthupdate()
   end
-end
-
-
-local inshape = false
-local clicked = nil
-function drawline(objls)
-  if not clicked then
-    for i = 1, #objls do
-      local px, py = love.mouse.getPosition()
-      if love.mouse.isDown(1) and objls[i].fixture:testPoint(px, py) then
-        clicked = objls[i]
-        inshape = true
-      end
-    end
-  end
-  if love.mouse.isDown(1) and inshape == true then
-    local px, py = love.mouse.getPosition()
-    local lx, ly = clicked.body:getWorldCenter()
-    love.graphics.setColor(1,1,1)
-    love.graphics.line(lx, ly, px, py)
-  else
-    inshape = false
-  end
-end
-
-
-love.update = function(dt)
   if not clicked then
     world:update(dt)
   else
-    world:update(dt/4)
+    world:update(dt/settings.slowfactor)
   end
 end
 
 
 function love.draw() 
   --draw each object 
-  drawobjects(objects)
-  drawline(objects)
+  drawentities(entities)
+  drawline(entities)
+  if settings.net == true then
+    drawnet(entities)
+  end
 end
 
 
