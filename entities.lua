@@ -2,18 +2,11 @@ local world = require('world')
 local settings = require('settings')
 require('entities/circle')
 require('entities/rect')
+require('entities/triangle')
 require('entities/boundarybox')
 boundarybox()
 local circle = createcircle()
 entities = {circle}
-
-
---draws each entity in entities table
-function drawentities(objlst)
-  for i = 1, #objlst do
-    objlst[i]:draw()
-  end
-end
 
 --draws a line from center of object to mouse when clicked
 local inshape = false
@@ -39,12 +32,14 @@ function drawline(objls)
 end
 
 --handles health per entity
+local destroyed = 0
 function healthupdate()
   local index = 1
   while index <= #entities do
     if entities[index].health then
       if entities[index].health <= 0 then
         entities[index].fixture:destroy()
+        destroyed = destroyed + 1
         table.remove(entities, index)
       else
         index = index + 1
@@ -64,5 +59,17 @@ function drawnet(objlst)
       love.graphics.setColor(1, 1, 1)
       love.graphics.line(frx, fry, tox, toy)
     end
+  end
+end
+
+--draws each entity in entities table
+function drawentities(objlst)
+  for i = 1, #objlst do
+    objlst[i]:draw()
+  end
+  if settings.destroyedcounter == true then
+    love.graphics.setColor(1, 1, 1)
+    --love.graphics.print('Destroyed: '..destroyed, 0, 0, 0, 1.1, 1.1)
+    love.window.setTitle('Destroyed: '..destroyed)
   end
 end

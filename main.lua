@@ -22,6 +22,10 @@ keymap = {
   c = function()
     local c = createcircle(love.mouse.getPosition())
     table.insert(entities, c)
+  end,
+  t = function()
+    local t = createtriangle(love.mouse.getPosition())
+    table.insert(entities, t)
   end
 }
 
