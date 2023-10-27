@@ -1,11 +1,11 @@
 local world = require('world')
 local settings = require('settings')
 require('entities')
-
+love.keyboard.setKeyRepeat(true)
 --map keys to function
 keymap = {
   space = function()
-    for i = 1,   entities do
+    for i = 1, #entities do
       entities[i].body:applyLinearImpulse(math.random(-1000, 1000), math.random(-1000, 1000))
     end
   end,
@@ -14,10 +14,11 @@ keymap = {
     table.insert(entities, r)
   end,
   m = function()
-    for i=2,  entities do
+    for i=1, #entities do
       entities[i].fixture:destroy()
     end
-    entities = {circle}
+    local c = createcircle()
+    entities = {c}
   end,
   c = function()
     local c = createcircle(love.mouse.getPosition())

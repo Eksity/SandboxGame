@@ -17,7 +17,8 @@ function createcircle(x, y)
         local cx, cy = self.body:getWorldPoint(self.shape:getPoint())
       	love.graphics.circle('fill', cx, cy, self.shape:getRadius())
 	end
-	circle.health = nil
+	circle.type = 'circle'
+	circle.health = 10
 	circle.end_contact = function(self)
 		if self.health then
     		self.health = self.health - 1

@@ -18,7 +18,8 @@ function createtriangle(x, y)
 		love.graphics.setColor(0,0,1)
     	love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
 	end
-	triangle.health = 5
+	triangle.type = 'triangle'
+	triangle.health = 10
 	triangle.end_contact = function(self)
     	self.health = self.health - 1
   	end

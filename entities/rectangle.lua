@@ -17,7 +17,8 @@ function createrectangle(x, y)
 		love.graphics.setColor(1,0,0)
     	love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
 	end
-	rect.health = 5
+	rect.type = 'rectangle'
+	rect.health = 10
 	rect.end_contact = function(self)
     	self.health = self.health - 1
   	end
